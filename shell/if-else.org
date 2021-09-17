@@ -1,0 +1,242 @@
+#+AUTHOR: Benn Ma
+#+EMAIL: benn.msg@gmail.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not LOGBOOK) date:t e:t
+#+OPTIONS: email:nil f:t inline:t p:nil pri:nil stat:t tags:t
+#+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+PROPERTY: header-args  :results output
+
+* Table of Content                                                       :TOC:
+- [[#if-else][If-Else]]
+  - [[#string-comparison][String Comparison]]
+  - [[#numeric-comparison][Numeric Comparison]]
+  - [[#file-conditionals][File Conditionals]]
+  - [[#combining-expressions][Combining expressions]]
+
+* If-Else
+
+- structure:
+
+#+BEGIN_EXAMPLE
+if TEST-COMMANDS; then 
+    CONSEQUENT-COMMANDS; 
+elif  TEST-COMMANDS; then 
+    CONSEQUENT-COMMANDS
+else
+    ALTERNATIVE-COMMANDS
+fi
+
+- shorter
+[ CONDITION ] && action  # if CONDITION is True, then execute action
+[ CONDITION ] || action  # if CONDITION is False, then execute action
+#+END_EXAMPLE
+
+#+BEGIN_QUOTE
+The TEST-COMMAND list is executed, and if its return status is zero, the CONSEQUENT-COMMANDS list is executed. The return status is the exit status of the last command executed, or zero if no condition tested true.
+#+END_QUOTE
+
+ref: https://linux.die.net/Bash-Beginners-Guide/sect_07_01.html
+
+** String Comparison
+
+| String Comparison | Description                               |
+|-------------------+-------------------------------------------|
+| Str1 = Str2       | Returns true if the strings are equal     |
+| Str1 != Str2      | Returns true if the strings are not equal |
+| -n Str1           | True of the length of "STRING" is non-zero    |
+| -z Str1           | True of the length of "STRING" is zero or undefined. | 
+  
+#+BEGIN_SRC sh  :exports both
+if [ 'a' = 'a' ]
+then
+    echo "1. a = a"
+fi
+
+if [ 'a' = 'b' ]
+then
+    echo "a = b"
+else
+    echo "2. a != b"
+fi
+
+if [ 'a' != 'b' ]; then
+    echo '3. a != b'
+fi
+
+str1="something"
+if [ -n $str1  ]; then
+    echo '4. str1 is non-empty'
+fi
+
+if [ -z $str2  ]; then
+    echo '5. str2 is undefined'
+fi
+
+str3=""
+if [ -z $str3  ]; then
+    echo '6. str3 is empty'
+fi
+#+END_SRC
+
+#+RESULTS:
+: 1. a = a
+: 2. a != b
+: 3. a != b
+: 4. str1 is non-empty
+: 5. str2 is undefined
+: 6. str3 is empty
+
+** Numeric Comparison
+
+| Numeric Comparison | Description                                             |
+|--------------------+---------------------------------------------------------|
+| expr1 -eq expr2    | Returns true if the expressions are equal               |
+| expr1 -ne expr2    | Returns true if the expressions are not equal           |
+| expr1 -gt expr2    | Returns true if expr1 is greater than expr2             |
+| expr1 -ge expr2    | Returns true if expr1 is greater than or equal to expr2 |
+| expr1 -lt expr2    | Returns true if expr1 is less than expr2                |
+| expr1 -le expr2    | Returns true if expr1 is less than or equal to expr2    |
+| ! expr1            | Negates the result of the expression                    |
+
+#+BEGIN_SRC sh  :exports both
+if [ 1 -eq 1 ]; then
+    echo '1 = 1'
+fi
+
+if [ 1 -ne 2 ]; then
+    echo '1 != 2'
+fi
+
+if [ 2 -gt 1 ]; then
+    echo '2 > 1'
+fi
+
+if [ 2 -ge 2 ]; then
+    echo '2 >= 2'
+fi
+
+if [ 2 -lt 3 ]; then
+    echo '2 < 3'
+fi
+
+if [ 2 -le 2 ]; then
+    echo '2 <= 2'
+fi
+
+if [ ! 2 -lt 1 ]; then
+    echo '2 is not < 1'
+fi
+#+END_SRC
+
+#+RESULTS:
+: 1 = 1
+: 1 != 2
+: 2 > 1
+: 2 >= 2
+: 2 < 3
+: 2 <= 2
+: 2 is not < 1
+
+** File Conditionals
+
+| File Conditionals | Description                                                                                      |
+|-------------------+--------------------------------------------------------------------------------------------------|
+| -d file           | True if the file is a directory                                                                  |
+| -a file           | True if file exists                                                                              |
+| -e file           | True if the file exists (note that this is not particularly portable, thus -f is generally used) |
+| -f file           | True if the file exists and is a regular file                                                    |
+| -h file           | True if the file exists and is a symbolic link                                                   |
+| -L file           | True if the file exists and is a symbolic link                                                   |
+| -p file           | True if the file exists and is a named pipe (FIFO).                                              |
+| -S file           | True if the file exists and is a socket.                                                         |
+| -N file           | True if the file exists and has been modified since it was last read.                            |
+| -r file           | True if the file is readable                                                                     |
+| -s file           | True if the file has a non-zero size                                                             |
+| -w                | True if the file is writable                                                                     |
+| -x                | True if the file is an executable                                                                |
+| FILE1 -nt FILE2   | True if FILE1 has been changed more recently than FILE2, or if FILE1 exists and FILE2 does not   |
+| FILE1 -ot FILE2   | True if FILE1 is older than FILE2, or is FILE2 exists and FILE1 does not.                        |
+| FILE1 -ef FILE2   | True if FILE1 and FILE2 refer to the same device and inode numbers.                              |
+
+- first let's check what we have in home dir
+#+BEGIN_SRC sh
+ls ~
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Documents
+Downloads
+Sources
+test.sh
+test2.sh
+#+end_example
+
+- then let's test the conditions
+#+BEGIN_SRC sh  :exports both
+if [ -d ~ ]; then
+    echo '~ is a dir'
+fi
+
+if [ ! -d ~/test.sh ]; then # this is false
+    echo '~/test.sh is not a dir' 
+fi
+
+if [ -e ~/test2.sh ]; then
+    echo '~/test2.sh exists.'
+fi
+
+if [ -f ~/test2.sh ]; then
+    echo '~/test2.sh exists and is a file'
+fi
+
+if [ -r ~/test.sh ]; then
+    echo '~/test.sh is readable'
+fi
+
+if [ -w ~/test.sh ]; then
+    echo '~/test.sh is writable as well'
+fi
+
+if [ ! -x ~/test.sh ]; then
+    echo '~/test.sh is not executable'
+fi
+
+if [ -s ~/test.sh ]; then
+    echo "size of ~/test.sh is bigger then zero "
+fi
+#+END_SRC
+
+#+RESULTS:
+: ~ is a dir
+: ~/test.sh is not a dir
+: ~/test2.sh exists.
+: ~/test2.sh exists and is a file
+: ~/test2.sh is not owned by my groups.
+: ~/test.sh is readable
+: ~/test.sh is writable as well
+: ~/test.sh is not executable
+: size of ~/test.sh is bigger then zero
+
+** Combining expressions
+
+| Operation          | Effect                                                                                      |
+|--------------------+---------------------------------------------------------------------------------------------|
+| [ ! EXPR ]         | True if EXPR is false.                                                                      |
+| [ ( EXPR ) ]       | Returns the value of EXPR. This may be used to override the normal precedence of operators. |
+| [ EXPR1 -a EXPR2 ] | True if both EXPR1 and EXPR2 are true.                                                      |
+| [ EXPR1 -o EXPR2 ] | True if either EXPR1 or EXPR2 is true.                                                      |
+
+#+BEGIN_SRC sh
+n=7
+
+if [ $n -gt 5 -a $n -lt 10 ]; then
+    echo "5 < n < 10"
+fi
+
+if [ $n -lt 2 -o $n -gt 5 ]; then
+    echo "n < 2 or n > 5"
+fi
+#+END_SRC
+
+#+RESULTS:

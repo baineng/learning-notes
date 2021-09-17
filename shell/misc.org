@@ -1,0 +1,182 @@
+#+AUTHOR: Benn Ma
+#+EMAIL: benn.msg@gmail.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not LOGBOOK) date:t e:t
+#+OPTIONS: email:nil f:t inline:t p:nil pri:nil stat:t tags:t
+#+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+PROPERTY: header-args  :results output
+
+* Talbe of Content                                                       :TOC:
+- [[#misc][Misc]]
+  - [[#how-scope-changes-after-source-another-file][how scope changes after source another file?]]
+  - [[#difference-between--and-----and--------][Difference between $() and ` `, ${}, $[] and $(()), [ ] (( )) [\[  \]]]]
+
+* Misc
+** how scope changes after source another file?
+- test1.sh
+#+BEGIN_SRC sh
+#!/bin/sh
+va="va"
+export vb="vb"
+#+END_SRC
+
+- test2.sh
+#+BEGIN_SRC sh
+#!/bin/sh
+. ~/test1.sh
+echo "in test2, va:$va"
+echo "in test2, vb:$vb"
+ta="ta"
+export tb="tb"
+#+END_SRC
+
+- execution file
+#+BEGIN_SRC sh :exports both
+. ~/test2.sh
+echo "va: $va"
+echo "vb: $vb"
+echo "ta: $ta"
+echo "tb: $tb"
+#+END_SRC
+
+#+RESULTS:
+: in test2, va:va
+: in test2, vb:vb
+: va: va
+: vb: vb
+: ta: ta
+: tb: tb
+
+** Difference between $() and ` `, ${}, $[] and $(()), [ ] (( )) [\[  \]]
+*** $() vs ``
+they are both using for command substitution
+
+- `` is more compatible, but can not be used in double quotes.
+- $() is not compitibility for all shells.
+
+#+BEGIN_SRC sh :exports both
+echo $(uname -r)
+echo `uname -r`
+echo "uname -r: $(uname -r)"
+#+END_SRC
+
+#+RESULTS:
+: 17.4.0
+: 17.4.0
+: uname -r: 17.4.0
+
+*** ${}
+
+- no difference between $var and ${var}
+
+#+BEGIN_SRC sh :exports both
+A='X'
+echo $AB
+echo ${A}B
+#+END_SRC
+
+#+RESULTS:
+: 
+: XB
+
+- it can also be using for string processing
+
+#+BEGIN_SRC sh :exports both
+str='iamastr'
+echo ${str#iam} # left trim
+echo ${str%str} # right trim
+echo ${str/a/f} # replace first a to be f
+echo ${str//a//f} # replace all a to be f
+#+END_SRC
+
+#+RESULTS:
+: astr
+: iama
+: ifmastr
+: i/fm/fstr
+
+- and variable setting
+
+|              | str is not defined  | str is empty        | str is non-empty        |
+|--------------+---------------------+---------------------+-------------------------|
+| ${str-expr}  | expr                |                     | $str                    |
+| ${str:-expr} | expr                | expr                | $str                    |
+| ${str+expr}  |                     | expr                | expr                    |
+| ${str:+expr} |                     |                     | expr                    |
+| ${str=expr}  | str=expr; var=expr  | str no change; var= | str no change; var=$str |
+| ${str:=expr} | str=expr; var=expr  | str=expr; var=expr  | str no change; var=$str |
+| ${str?expr}  | expr send to stderr |                     | $str                    |
+| ${str:?expr} | expr send to stderr | expr send to stderr | $str                    |
+
+#+BEGIN_SRC sh :exports both
+echo ${str1='abc'}
+echo $str1
+#+END_SRC
+
+#+RESULTS:
+: abc
+: abc
+
+#+BEGIN_SRC sh :exports both
+${str2?'str2 is not defined'}
+#+END_SRC
+
+#+RESULTS:
+
+*** $[] vs $(())
+they are same, both are using for calculation (note: bash can only calculate integer)
+
+#+BEGIN_SRC sh :exports both
+a=5; b=7; c=2
+echo $(( a+b*c ))
+echo $(( (a+b)*c ))
+echo $(( (a*b)%c ))
+
+echo $[ a+b*c ]
+echo $[ (a+b)*c ]
+echo $[ (a*b)%c ]
+#+END_SRC
+
+#+RESULTS:
+: 19
+: 24
+: 1
+: 19
+: 24
+: 1
+
+*** [] vs (()) vs [[]]
+- [] is another way of test command, test expr equals [ expr ]
+#+BEGIN_SRC sh :exports both
+if [ 2 -gt 1 ]; then
+    echo '2 < 1'
+fi
+#+END_SRC
+
+#+RESULTS:
+: 2 < 1
+
+- (()) a enhanced version of []
+#+BEGIN_SRC sh :exports both
+if (( 2 > 1 && 3 > 2 )); then
+    echo '2 > 1 and 3 > 2'
+fi
+if (( "str" == "str" )); then
+    echo 'str'
+fi
+#+END_SRC
+
+#+RESULTS:
+: 2 > 1 and 3 > 2
+: str
+
+- [[]] also a enhanced version of [], supports pattern match
+#+BEGIN_SRC sh :exports both
+[[ hello == hell? ]] && echo 'hello == hell?'
+[[ hello =~ h ]] && echo 'hello starts from h'
+#+END_SRC
+
+#+RESULTS:
+: hello == hell?
+: hello starts from h
+
