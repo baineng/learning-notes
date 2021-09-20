@@ -9,11 +9,15 @@
 #+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
 #+PROPERTY: header-args  :results output
 
-* Table of Content                                                 :TOC:QUOTE:
+* Table of Content                                               :TOC_3:QUOTE:
 #+BEGIN_QUOTE
 - [[#misc][Misc]]
   - [[#how-scope-changes-after-source-another-file][how scope changes after source another file?]]
   - [[#difference-between--and-----and--------][Difference between $() and ` `, ${}, $[] and $(()), [ ] (( )) [\[  \]]]]
+    - [[#-vs-][$() vs ``]]
+    - [[#][${}]]
+    - [[#-vs--1][$[] vs $(())]]
+    - [[#-vs--vs-][[] vs (()) vs [[]]]]
 #+END_QUOTE
 
 * Misc

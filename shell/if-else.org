@@ -9,7 +9,7 @@
 #+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
 #+PROPERTY: header-args  :results output
 
-* Table of Content                                                 :TOC:QUOTE:
+* Table of Content                                               :TOC_3:QUOTE:
 #+BEGIN_QUOTE
 - [[#if-else][If-Else]]
   - [[#string-comparison][String Comparison]]
