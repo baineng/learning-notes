@@ -1,3 +1,6 @@
+:PROPERTIES:
+:ID:       7E8E38EA-A8E3-4BFE-8BAD-88D208AEEBC6
+:END:
 #+AUTHOR: Benn Ma
 #+EMAIL: benn.msg@gmail.com
 #+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline

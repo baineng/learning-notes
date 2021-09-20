@@ -1,0 +1,32 @@
+:PROPERTIES:
+:ID:       80A6941A-011E-43BF-81DE-CF4703137F96
+:END:
+#+AUTHOR: Benn Ma
+#+EMAIL: benn.msg@gmail.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 
+:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not LOGBOOK) date:t e:t
+#+OPTIONS: email:nil f:t inline:t p:nil pri:nil stat:t tags:t
+#+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+PROPERTY: header-args  :results output
+
+* Talbe of Content                                                       :TOC:
+- [[#mutable-collections][Mutable Collections]]
+  - [[#dict][dict]]
+
+* Mutable Collections
+** dict
+#+begin_src python
+dict1 = {
+    "item1": "value1",
+    "item2": "value2",
+}
+
+dict2 = dict1
+dict2["item2"] = "value3"
+
+print(dict1)
+#+end_src
+
+#+RESULTS:
+: {'item1': 'value1', 'item2': 'value3'}

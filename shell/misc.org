@@ -1,3 +1,6 @@
+:PROPERTIES:
+:ID:       EEB52EC6-7C09-4F74-BB1E-C2308969B2B5
+:END:
 #+AUTHOR: Benn Ma
 #+EMAIL: benn.msg@gmail.com
 #+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
@@ -6,10 +9,12 @@
 #+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
 #+PROPERTY: header-args  :results output
 
-* Talbe of Content                                                       :TOC:
+* Talbe of Content                                                 :TOC:QUOTE:
+#+BEGIN_QUOTE
 - [[#misc][Misc]]
   - [[#how-scope-changes-after-source-another-file][how scope changes after source another file?]]
   - [[#difference-between--and-----and--------][Difference between $() and ` `, ${}, $[] and $(()), [ ] (( )) [\[  \]]]]
+#+END_QUOTE
 
 * Misc
 ** how scope changes after source another file?
