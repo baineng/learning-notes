@@ -10,9 +10,11 @@
 #+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
 #+PROPERTY: header-args  :results output
 
-* Talbe of Content                                                       :TOC:
+* Talbe of Content                                                 :TOC:QUOTE:
+#+BEGIN_QUOTE
 - [[#mutable-collections][Mutable Collections]]
   - [[#dict][dict]]
+#+END_QUOTE
 
 * Mutable Collections
 ** dict

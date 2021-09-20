@@ -9,12 +9,14 @@
 #+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
 #+PROPERTY: header-args  :results output
 
-* Misc                                                           :TOC_2:QUOTE:
+* Table of Content                                                 :TOC:QUOTE:
 #+BEGIN_QUOTE
+- [[#misc][Misc]]
   - [[#how-scope-changes-after-source-another-file][how scope changes after source another file?]]
   - [[#difference-between--and-----and--------][Difference between $() and ` `, ${}, $[] and $(()), [ ] (( )) [\[  \]]]]
 #+END_QUOTE
 
+* Misc
 ** how scope changes after source another file?
 - test1.sh
 #+BEGIN_SRC sh

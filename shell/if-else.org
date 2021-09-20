@@ -9,12 +9,14 @@
 #+OPTIONS: tasks:t tex:t timestamp:t toc:t todo:t |:t
 #+PROPERTY: header-args  :results output
 
-* Table of Content                                                       :TOC:
+* Table of Content                                                 :TOC:QUOTE:
+#+BEGIN_QUOTE
 - [[#if-else][If-Else]]
   - [[#string-comparison][String Comparison]]
   - [[#numeric-comparison][Numeric Comparison]]
   - [[#file-conditionals][File Conditionals]]
   - [[#combining-expressions][Combining expressions]]
+#+END_QUOTE
 
 * If-Else
 
